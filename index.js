@@ -41,7 +41,7 @@ setIntervalAsync(()=>{
             }
         })
     })
-},1000)
+},60000)
 
 app.get("/",(req,res)=>{
     inc.findAll({
