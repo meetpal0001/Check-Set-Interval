@@ -1,5 +1,6 @@
 var express=require("express");
-const Sequelize=require("sequelize")
+const Sequelize=require("sequelize");
+const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async');
 
 let sequelize = new Sequelize('yrjdbmgx', 'yrjdbmgx', '6fF3gtCKckJAc3xeT8l-7ZZRs21yxmtJ', {
     host: 'baasu.db.elephantsql.com',
@@ -23,7 +24,7 @@ var HTTP_PORT = process.env.PORT || 8080;
 
 
 
-setInterval(()=>{
+setIntervalAsync(()=>{
     inc.findAll({
         attributes:['num'],
         where :{
