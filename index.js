@@ -1,19 +1,61 @@
 var express=require("express");
+const Sequelize=require("sequelize")
+
+let sequelize = new Sequelize('yrjdbmgx', 'yrjdbmgx', '6fF3gtCKckJAc3xeT8l-7ZZRs21yxmtJ', {
+    host: 'baasu.db.elephantsql.com',
+    dialect: 'postgres',
+    port: 5432,
+    dialectOptions: {
+        ssl: { rejectUnauthorized: false },
+    },
+});
+
+
+var inc = sequelize.define('inc', {
+    aplha:Sequelize.STRING,
+    num:Sequelize.INTEGER
+})
+
 
 var app=express();
 
 var HTTP_PORT = process.env.PORT || 8080;
 
-var x=0
+
 
 setInterval(()=>{
-    x+=1
+    inc.findAll({
+        attributes:['num'],
+        where :{
+            aplha:'x'
+        }
+    }).then((number)=>{
+        y=number[0].num+1
+        inc.update({
+            num:y
+        },
+        {
+            where :{
+                aplha:'x'
+            }
+        })
+    })
 },1000)
 
 app.get("/",(req,res)=>{
-    res.send({num:x})
+    inc.findAll({
+        attributes:['num'],
+        where :{
+            aplha:'x'
+        }
+    }).then((number)=>{
+        res.send({num:number[0].num})
+    })
 })
 
-app.listen(HTTP_PORT,()=>{
-    console.log("app listning on: "+HTTP_PORT)
-})
+sequelize.sync().then(()=>{
+    
+    app.listen(HTTP_PORT,()=>{
+        console.log("app listning on: "+HTTP_PORT)
+    })
+}) 
